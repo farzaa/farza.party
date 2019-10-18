@@ -90,10 +90,39 @@ li {
 }
 
 .tag {
-    background-color: #d4f7ff;
-    padding: 3px;
+    margin-right: 5px;
+    width: 64px;
+    text-align: center;
+}
+
+.debugTag {
     border-radius: 4px;
-    margin-left: 5px;
+    padding: 3px;
+    background-color: #d4d4d4;
+}
+
+.infoTag {
+    border-radius: 4px;
+    padding: 3px;
+    background-color: #caeeff;
+}
+
+.warnTag {
+    border-radius: 4px;
+    padding: 3px;
+    background-color: #fff6a9;
+}
+
+.errorTag {
+    border-radius: 4px;
+    padding: 3px;
+    background-color: #ffc3bf;
+}
+
+.fatalTag {
+    border-radius: 4px;
+    padding: 3px;
+    background-color: #ff1313;
 }
 
 .mainLoggingContainer {
@@ -110,7 +139,6 @@ li {
     flex-direction: row;
     align-items: center;
     margin-bottom: 5px;
-    font-size: 13px;
 }
 
 .logNumber {

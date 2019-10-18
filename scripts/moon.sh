@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # Build image locally, push it up to Dockerhub.
-docker build -t party .
-docker push farzatv/party
+docker build -t farzatv/party:latest .
+docker push farzatv/party:latest
 
 ssh -i ~/farza-key.pem ec2-user@18.224.114.44 "\
 sudo docker stop farza || true && sudo docker rm farza || true

@@ -4,7 +4,6 @@ import (
 	"cloud.google.com/go/firestore"
 	"context"
 	"firebase.google.com/go"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
@@ -17,20 +16,23 @@ import (
 const baseTemplate = "layout.tmpl"
 
 type LogEntryGet struct {
-	Tags []string `json:"tags"`
-	Text string `json:"text"`
-	Time string `json:"time"`
+	Tag   string `json:"tag"`
+	Text  string `json:"text"`
+	Time  string `json:"time"`
+	Level string `json:"level"`
 }
 
 type LogEntryPost struct {
-	Tags []string `json:"tags"`
-	Text string `json:"text"`
+	Tag   string `json:"tag"`
+	Text  string `json:"text"`
+	Level string `json:"level"`
 }
 
 type LogEntry struct {
-	Tags []string `firestore:"tags"`
-	Text string `firestore:"text"`
-	Time time.Time `firestore:"time"`
+	Tag   string    `firestore:"tag"`
+	Text  string    `firestore:"text"`
+	Time  time.Time `firestore:"time"`
+	Level string    `firestore:"level"`
 }
 
 func main() {
@@ -55,17 +57,15 @@ func main() {
 
 	router.GET("/", func(c *gin.Context) {
 		t, _ := template.ParseFiles("templates/layout/layout.tmpl", "templates/home/home.tmpl")
-		t.ExecuteTemplate(c.Writer, "layout",  gin.H{
-			"title": "Main website",
-		})
+		t.ExecuteTemplate(c.Writer, "layout", "")
 	})
 
 	router.GET("/past", func(c *gin.Context) {
 		t, _ := template.ParseFiles("templates/layout/layout.tmpl", "templates/past/past.tmpl")
-		t.ExecuteTemplate(c.Writer, "layout",  "")
+		t.ExecuteTemplate(c.Writer, "layout", "")
 	})
 
-	router.GET("/log", func(c *gin.Context) {
+	router.GET("/logs", func(c *gin.Context) {
 		t, _ := template.ParseFiles("templates/layout/layout.tmpl", "templates/log/log.tmpl")
 		q := logsCollection.OrderBy("time", firestore.Desc).Limit(100)
 		iter := q.Documents(ctx)
@@ -89,7 +89,11 @@ func main() {
 			}
 
 			t := logEntry.Time
-			loc, err := time.LoadLocation("America/New_York")
+			loc := time.FixedZone("EDT", -60*60*4)
+			if err != nil {
+				c.JSON(http.StatusBadGateway, gin.H{"error": err.Error()})
+				return
+			}
 			if err := doc.DataTo(logEntry); err != nil {
 				c.JSON(http.StatusBadGateway, gin.H{"error": err.Error()})
 				return
@@ -97,15 +101,16 @@ func main() {
 			t = t.In(loc)
 			logs = append(logs, &LogEntryGet{
 				Text: logEntry.Text,
-				Tags: logEntry.Tags,
+				Tag:  logEntry.Tag,
 				Time: t.Format(("Mon 3:04PM Jan _2 2006")),
+				Level: logEntry.Level,
 			})
 		}
-		fmt.Println(logs)
+
 		t.ExecuteTemplate(c.Writer, "layout", logs)
 	})
 
-	router.POST("/log", func(c *gin.Context) {
+	router.POST("/logs", func(c *gin.Context) {
 		entryPost := &LogEntryPost{}
 		if err := c.ShouldBindJSON(entryPost); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -115,7 +120,8 @@ func main() {
 		entry := &LogEntry{
 			Time: time.Now(),
 			Text: entryPost.Text,
-			Tags: entryPost.Tags,
+			Tag:  entryPost.Tag,
+			Level: entryPost.Level,
 		}
 		_, _, err := logsCollection.Add(ctx, entry)
 		if err != nil {

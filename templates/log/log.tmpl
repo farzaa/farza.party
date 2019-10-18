@@ -8,15 +8,37 @@
             {{range $key, $log := .}}
                 <div class="entry">
                     <div class="entryDetails">
+                        <div class="tagContainer">
+                            <div class="tag">
+                                {{if eq $log.Level "DEBUG"}}
+                                    <div class="debugTag">
+                                        {{$log.Level}}
+                                    </div>
+                                {{else if eq $log.Level "INFO"}}
+                                    <div class="infoTag">
+                                        {{$log.Level}}
+                                    </div>
+                                {{else if eq $log.Level "WARN"}}
+                                    <div class="warnTag">
+                                        {{$log.Level}}
+                                    </div>
+                                {{else if eq $log.Level "ERROR"}}
+                                    <div class="errorTag">
+                                        {{$log.Level}}
+                                    </div>
+                                {{else if eq $log.Level "FATAL"}}
+                                    <div class="fatalTag">
+                                        {{$log.Level}}
+                                    </div>
+                                {{end}}
+                            </div>
+                        </div>
                         <div class="title">
                             <span class="time">{{$log.Time}}</span>
                         </div>
-                        <div class="tagContainer">
-                            <div class="tag">Reading</div>
-                        </div>
                     </div>
                     <div class="log">
-                        Ate some pasta.
+                        {{$log.Text}}
                     </div>
                 </div>
             {{end}}
