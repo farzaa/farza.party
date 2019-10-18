@@ -1,0 +1,118 @@
+.body {
+    background-color: white;
+}
+.mainContainer {
+    font-family: Open Sans,sans-serif;
+    margin: 30px 30px;
+}
+@media screen and (min-device-width: 600px) {
+    .mainContainer {
+      max-width: 500px;
+      margin: 60px 80px;
+    }
+}
+
+.initalPrimer {
+    margin-top: 31px;
+    font-size: 17px;
+    font-weight: 100;
+}
+
+.jobTitle {
+    font-size: 20px;
+    color: #008070;
+}
+
+.mainTitle {
+    font-size: 35px;
+    font-weight: 300;
+}
+.logTitle {
+    margin-left: 5px;
+    font-size: 35px;
+    font-weight: 300;
+}
+
+.subSection {
+    font-size: 17px;
+    font-weight: 100;
+    margin-top: 42px;
+}
+
+.me {
+    width: 240px;
+    height: auto;
+}
+
+.substackContainer {
+    margin-top: 42px;
+    width: 100%;
+}
+
+
+.smallText {
+    font-style: italic;
+}
+
+li {
+    padding-top: 10px;
+}
+
+
+
+.table {
+    display: flex;
+    flex-direction: column;
+}
+
+.entry  {
+    display: flex;
+    font-size: 15px;
+    font-weight: 100;
+    flex-direction: column;
+    padding: 10 10 10 0;
+    border-radius: 3px;
+}
+
+.entry:first-child{
+    margin-top: 25px;
+}
+
+
+.time {
+    color: #525252;
+}
+
+.tagContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.tag {
+    background-color: #d4f7ff;
+    padding: 3px;
+    border-radius: 4px;
+    margin-left: 5px;
+}
+
+.mainLoggingContainer {
+    font-family: Open Sans,sans-serif;
+    margin: 30px 30px;
+}
+
+.title {
+    margin-right: 10px;
+}
+
+.entryDetails {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 5px;
+    font-size: 13px;
+}
+
+.logNumber {
+    font-weight: 800;
+}

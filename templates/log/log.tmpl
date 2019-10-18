@@ -1,0 +1,28 @@
+{{define "content"}}
+    <div class="mainLoggingContainer">
+        <div class="mainTitle">
+            FarzaLog
+        </div>
+
+        <div class="table">
+            {{range $key, $log := .}}
+                <div class="entry">
+                    <div class="entryDetails">
+                        <div class="title">
+                            <span class="time">{{$log.Time}}</span>
+                        </div>
+                        <div class="tagContainer">
+                            <div class="tag">Reading</div>
+                        </div>
+                    </div>
+                    <div class="log">
+                        Ate some pasta.
+                    </div>
+                </div>
+            {{end}}
+        </div>
+
+
+
+    </div>
+{{end}}

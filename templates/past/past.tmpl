@@ -1,0 +1,68 @@
+{{define "content"}}
+    <div class="mainContainer">
+        <div class="mainTitle">
+            My Past
+        </div>
+
+        <div class="subSection">
+            <div class="jobTitle">[cto] - Kanga (website, reddit post) </div>
+            Kanga was the “TV guide for live gaming”. We used computer vision on video game streams to aggregate data right from the pixels of the stream to get things like: kills, deaths, character, etc so people could easily find the best stream to watch at that moment. The product itself was a Chrome + Firefox extension and iOS + Android mobile app. Kanga raised a couple million dollars of venture capital and I was brought on as the first technical employee. I started the codebase from zero, hired the full-time team of engineers + designers, and led product + engineering. Most of my time was spent creating the GPU powered computer vision pipeline that used custom models I trained on artificial datasets to generically grab metadata from 100s of stream in real-time. I also handled all our deployments to AWS (Docker + Ansible) and analytics (Datadog, Segment, Mixpanel). Ask me more about this if you want! I love geeking out about it. 
+        </div>
+
+        <div class="subSection">
+            <div class="jobTitle">[project] - PogChampNet (blogpost)</div>
+            This project started out as a joke and actually eneded up working, LOL. Whenever something exciting happens on a Twitch stream people in the chat will spam “PogChamp”. I downloaded thousands of hours of Twitch streams and was able to create a dataset of exciting clips by automatically detecting where in the stream people spammed “PogChamp”. I used this dataset of clips to train a convolutional neural net which would take in a random video of someones gameplay and automatically create clips of the highlight worthy moments in the game :).
+        </div>
+
+        <div class="subSection">
+            <div class="jobTitle">[ml engineer] - Visor (website, reddit post)</div>
+            I joined Visor as Engineer #3 right after they finished YC and raised their Series A. It was an extremely complex project. But, at the core of it we were making the world's first real-time, AI-based gaming coach. People would play games on their PC, stream us their game screen directly, we would run CV algorithms on the stream, figure out the what was happening in the users game, and give them personalized tips + analytics in real time to help them get better.
+        </div>
+
+        <div class="subSection">
+            <div class="jobTitle">[project] - DeepOW (repo, reddit post, blogpost)</div>
+            This was awesome. I trained a lightweight convolutional neural net that was able to detect what character a user was playing in Overwatch. I created the dataset + trained the model, converted it to work in Tensorflow.js, and got it working in an Electron app. The app would take screenshots of the users screen and run the model locally on the user's machine to determine their character. I took this result to play music for the user based on the mood of the character they were playing. The user never needed to lift a finger. The desktop Electron app would do all the magic. The mood of the music would automatically switch when they switched characters. 
+        </div>
+        <div class="subSection">
+            <div class="jobTitle">[project] - DeepLeague (repo, reddit post, blogpost)</div>
+            DeepLeague really shook up the world of esports analytics for League of Legends because it gave coaches access to data they dreamed of having but no API provided. It’s a computer vision based open-source tool + dataset that I created which allows esports analysts to automatically generate a spreadsheet telling them how their players moved around the map during the game given just a video. It’s sorta like knowing the exact position of all 10 players on a basketball court at every second - but for a video game!
+        </div>
+
+        <div class="subSection">
+            <div class="jobTitle">[cv research] - UCF CRCV (paper, website) </div>
+            This is where I got my start in the world of computer vision + deep learning. I worked with Dr. Mubarak Shah on end-to-end deep learning for self-driving cars alongside some of the most talented computer vision researchers in the world. My research in particular focused on the use of saliency detection, side-task learning, and 3D CNNs. Check out my paper for more. By the end of the year, my results surpassed that of NVIDIA and Google but right before I went to publish Google came out with a paper with nearly the exact same ideas as me :(.
+        </div>
+        
+        <div class="subSection">
+            <div class="jobTitle">[co-founder] - Noni (repo)</div>
+            Noni was absolutely bonkers and I have so many stories about the process of creating it that won’t fit here. It allowed you to view a restaurants menu in augmented reality. You would download our app, point your phone at a table, and you could see photorealistic 3D models of that specific restaurant's menu items right on your table as if they were right in front of you freshly cooked. How did it work? Well, over a course of many months I perfected this technique called “photogrammetry” where you could takes 100s of pictures of an object and get a photorealistic 3D model of the object as an output. I used this to create 3D models of a restaurant's food. Noni was also the first iOS app ever to use breakthrough 3D model compression techniques which allowed us to serve tiny files over the wire to clients and decompress them locally on the device.
+        </div>
+
+        <div class="subSection">
+            <div class="jobTitle">[project] - TeamMood (blogpost)</div>
+            I created + led an online programming school with a focus on projects where the students would learn by actually building. The program featured volunteer mentors from companies like Google, Amazon, Twitch, and Microsoft. The student would come in, talk about their interests, we'd craft them a custom 8-week plan for a project based on their interests, and their mentor would talk to them every week about their progress and help them along the way. Graduates of TeamMood went on to work at Riot Games, Microsoft, and other cool companies :). Feel free to read the blogpost and ask me more about this in real life. I love talking about it and bragging about the students :).
+        </div>
+
+        <div class="subSection">
+            <div class="jobTitle">[project] - MoodGG (repo, reddit post, blogpost)</div>
+            A website I created that went viral and got over 500,000 users and 3,000,000 hits, and 18,000 upvotes on Reddit. It allows you to listen to music based on the personality of the character you’re playing in the game to match the mood! Node, Mongo, Express, all that good stuff.
+        </div>
+
+        <div class="subSection">
+            <div class="jobTitle">[internship] - General Dynamics </div>
+            This job taught me that I never want to work for a giant company that creates tools to aid the military w/ killing people. I worked on augmented reality training software.
+        </div> 
+        <div class="subSection">
+            <div class="jobTitle">[internship] - SightPlan </div>
+            SightPlan was a startup with around 18 people. I did customer service for about 11 months there and light dev work on their admin panel. 
+        </div> 
+        <div class="subSection">
+            <div class="jobTitle">[phone customer service] - Amazon </div>
+            My first “real job”. I sat on the phone and just helped people with their Amazon order. It was pretty fun not gonna lie, LOL. I don't think I'd be any good at talking to users or confidently speaking to a team if not for this job. Getting screamed at by customers all day changes a man XD.
+        </div> 
+        <div class="subSection">
+            <div class="jobTitle">[founder] - Sabiha Enterprises </div>
+            I built this company in high school and was doing $110,000 in annual revenue. I was an 11th grader making more than my teachers. The company focused on selling blank DVDs on eBay and Amazon. I did all the shipping, marketing, and customer service. Eventually, that business sorta died and I pivoted to t-shirts where I'd hire artists to make cool designs related to different topics popping off during the time (ex. Breaking Bad) and would use basic marketing strategies to sell tons of those t-shirts.
+        </div> 
+    </div>
+{{end}}
