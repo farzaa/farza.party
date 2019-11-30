@@ -5,6 +5,7 @@ import (
 	"context"
 	"firebase.google.com/go"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/autotls"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 	"html/template"
@@ -132,5 +133,6 @@ func main() {
 		c.JSON(http.StatusOK, entryPost)
 	})
 
-	router.Run(":80")
+	// Listens on :443 and :80. Redirects traffic from :80 to :443.
+	log.Fatal(autotls.Run(router, "farza.party"))
 }
