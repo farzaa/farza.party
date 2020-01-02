@@ -3,6 +3,7 @@ package main
 import (
 	"cloud.google.com/go/firestore"
 	"context"
+	"fmt"
 	"firebase.google.com/go"
 	"github.com/gin-gonic/gin"
 	"google.golang.org/api/iterator"
@@ -55,6 +56,19 @@ func main() {
 	router.Static("/static", "./static")
 	logsCollection := client.Collection("logs")
 
+	router.GET("/ping", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"response": "pong"})
+	})
+
+	router.GET("/hello", func(c *gin.Context) {
+		name := c.Query("name")
+		if name == ""  {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "no name given"})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{"response": "Hello " + name})
+	})
+
 	router.GET("/", func(c *gin.Context) {
 		t, _ := template.ParseFiles("templates/layout/layout.tmpl", "templates/home/home.tmpl")
 		t.ExecuteTemplate(c.Writer, "layout", "")
@@ -62,6 +76,13 @@ func main() {
 
 	router.GET("/past", func(c *gin.Context) {
 		t, _ := template.ParseFiles("templates/layout/layout.tmpl", "templates/past/past.tmpl")
+		t.ExecuteTemplate(c.Writer, "layout", "")
+	})
+
+	router.GET("/blog/:title", func(c *gin.Context) {
+		title := c.Param("title")
+		path := fmt.Sprintf("templates/blog/%s.tmpl", title)
+		t, _ := template.ParseFiles("templates/layout/layout.tmpl", path)
 		t.ExecuteTemplate(c.Writer, "layout", "")
 	})
 
@@ -89,7 +110,7 @@ func main() {
 			}
 
 			t := logEntry.Time
-			loc := time.FixedZone("EDT", -60*60*4)
+			loc := time.FixedZone("PST", -60*60*4)
 			if err != nil {
 				c.JSON(http.StatusBadGateway, gin.H{"error": err.Error()})
 				return
