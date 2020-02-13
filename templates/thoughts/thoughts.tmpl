@@ -1,0 +1,53 @@
+{{define "content"}}
+    <div class="mainLoggingContainer">
+        <div class="mainTitle">
+            FarzaThoughts
+        </div>
+        <div class="subtitle">
+            a way to track the interesting electrons in my brain.
+        </div>
+
+        <div class="table">
+            {{range $key, $thought := .}}
+                <div class="entry">
+                    <div class="entryDetails">
+                        <div class="tagContainer">
+                            <div class="tag">
+                                {{if eq $thought.Level "1"}}
+                                    <div class="debugTag">
+                                        {{$thought.Level}}
+                                    </div>
+                                {{else if eq $thought.Level "2"}}
+                                    <div class="infoTag">
+                                        {{$thought.Level}}
+                                    </div>
+                                {{else if eq $thought.Level "3"}}
+                                    <div class="warnTag">
+                                        {{$thought.Level}}
+                                    </div>
+                                {{else if eq $thought.Level "4"}}
+                                    <div class="errorTag">
+                                        {{$thought.Level}}
+                                    </div>
+                                {{else if eq $thought.Level "5"}}
+                                    <div class="fatalTag">
+                                        {{$thought.Level}}
+                                    </div>
+                                {{end}}
+                            </div>
+                        </div>
+                        <div class="title">
+                            <span class="time">{{$thought.Time}}</span>
+                        </div>
+                    </div>
+                    <div class="log">
+                        {{$thought.Text}}
+                    </div>
+                </div>
+            {{end}}
+        </div>
+
+
+
+    </div>
+{{end}}

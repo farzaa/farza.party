@@ -1,17 +1,18 @@
 package main
 
 import (
-	"cloud.google.com/go/firestore"
 	"context"
 	"fmt"
-	"firebase.google.com/go"
-	"github.com/gin-gonic/gin"
-	"google.golang.org/api/iterator"
-	"google.golang.org/api/option"
 	"html/template"
 	"log"
 	"net/http"
 	"time"
+
+	"cloud.google.com/go/firestore"
+	firebase "firebase.google.com/go"
+	"github.com/gin-gonic/gin"
+	"google.golang.org/api/iterator"
+	"google.golang.org/api/option"
 )
 
 const baseTemplate = "layout.tmpl"
@@ -55,6 +56,7 @@ func main() {
 	router.LoadHTMLGlob("./templates/**/*")
 	router.Static("/static", "./static")
 	logsCollection := client.Collection("logs")
+	thoughtsCollection := client.Collection("thoughts")
 
 	router.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"response": "pong"})
@@ -62,7 +64,7 @@ func main() {
 
 	router.GET("/hello", func(c *gin.Context) {
 		name := c.Query("name")
-		if name == ""  {
+		if name == "" {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "no name given"})
 			return
 		}
@@ -121,9 +123,9 @@ func main() {
 			}
 			t = t.In(loc)
 			logs = append(logs, &LogEntryGet{
-				Text: logEntry.Text,
-				Tag:  logEntry.Tag,
-				Time: t.Format(("Mon 3:04PM Jan _2 2006")),
+				Text:  logEntry.Text,
+				Tag:   logEntry.Tag,
+				Time:  t.Format(("Mon 3:04PM Jan _2 2006")),
 				Level: logEntry.Level,
 			})
 		}
@@ -139,12 +141,79 @@ func main() {
 		}
 
 		entry := &LogEntry{
-			Time: time.Now(),
-			Text: entryPost.Text,
-			Tag:  entryPost.Tag,
+			Time:  time.Now(),
+			Text:  entryPost.Text,
+			Tag:   entryPost.Tag,
 			Level: entryPost.Level,
 		}
 		_, _, err := logsCollection.Add(ctx, entry)
+		if err != nil {
+			c.JSON(http.StatusBadGateway, gin.H{"error": err.Error()})
+			return
+		}
+		//dr.Update(ctx, []firestore.Update{{Path: "capital", Value: "Sacramento"}})
+		c.JSON(http.StatusOK, entryPost)
+	})
+
+	router.GET("/thoughts", func(c *gin.Context) {
+		t, _ := template.ParseFiles("templates/layout/layout.tmpl", "templates/thoughts/thoughts.tmpl")
+		q := thoughtsCollection.OrderBy("time", firestore.Desc).Limit(100)
+		iter := q.Documents(ctx)
+
+		thoughts := make([]*LogEntryGet, 0)
+
+		defer iter.Stop()
+		for {
+			doc, err := iter.Next()
+			if err == iterator.Done {
+				break
+			}
+			if err != nil {
+				c.JSON(http.StatusBadGateway, gin.H{"error": err.Error()})
+				return
+			}
+			logEntry := &LogEntry{}
+			if err := doc.DataTo(logEntry); err != nil {
+				c.JSON(http.StatusBadGateway, gin.H{"error": err.Error()})
+				return
+			}
+
+			t := logEntry.Time
+			loc := time.FixedZone("PST", -60*60*4)
+			if err != nil {
+				c.JSON(http.StatusBadGateway, gin.H{"error": err.Error()})
+				return
+			}
+			if err := doc.DataTo(logEntry); err != nil {
+				c.JSON(http.StatusBadGateway, gin.H{"error": err.Error()})
+				return
+			}
+			t = t.In(loc)
+			thoughts = append(thoughts, &LogEntryGet{
+				Text:  logEntry.Text,
+				Tag:   logEntry.Tag,
+				Time:  t.Format(("Mon 3:04PM Jan _2 2006")),
+				Level: logEntry.Level,
+			})
+		}
+
+		t.ExecuteTemplate(c.Writer, "layout", thoughts)
+	})
+
+	router.POST("/thoughts", func(c *gin.Context) {
+		entryPost := &LogEntryPost{}
+		if err := c.ShouldBindJSON(entryPost); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		entry := &LogEntry{
+			Time:  time.Now(),
+			Text:  entryPost.Text,
+			Tag:   entryPost.Tag,
+			Level: entryPost.Level,
+		}
+		_, _, err := thoughtsCollection.Add(ctx, entry)
 		if err != nil {
 			c.JSON(http.StatusBadGateway, gin.H{"error": err.Error()})
 			return
